@@ -1,0 +1,132 @@
+.containerCenter{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--gray);
+    background-image: url(../public/cloud-solid-svg.svg);
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.login{
+    width: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    background-color: var(--white);
+    border-radius: 00.5rem;
+    margin-top: 47px;
+
+    form{
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    form button{
+        height: 45px;
+        font-size: 1.2rem;
+        width: 100%;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+
+    form input{
+        width: 100%;
+    }
+
+    h1{
+        color: #534730;
+        padding: 30px;
+        padding-bottom: 40px;
+    }
+
+    label{
+        color: #555859;
+        padding: 15px;
+        margin-right: 90%;
+    }
+}
+
+.text{
+    margin-top: 1.5rem;
+    color: var(--light-black);
+    cursor: pointer;
+}
+
+@media (max-width: 800px){
+    .login{
+        width: 80%;
+
+       label{
+        margin-right: 80%;
+       }
+
+       form input{
+        height: 45px;
+       }
+
+       form button{
+        height: 40px;
+        width: 70%;
+       }
+    }
+}
+
+@media (min-width: 2000px){
+    .login{
+        width: 900px;
+        height: 640px;
+        margin-top: 125px;;
+       label{
+        margin-right: 90%;
+       }
+
+       form input{
+        height: 60px;
+       }
+
+       form button{
+        height: 55px;
+        width: 70%;
+       }
+    }
+
+    .containerCenter{
+        background-size: 55%;
+    }
+}
+
+@media (min-width: 2500px){
+    .login{
+        width: 1100px;
+        height: 680px;
+        margin-top: 130px;;
+       label{
+        margin-right: 90%;
+       }
+
+       form input{
+        height: 60px;
+       }
+
+       form button{
+        height: 55px;
+        width: 70%;
+       }
+    }
+
+    .containerCenter{
+        background-size: 46%;
+    }
+}
+
+
+

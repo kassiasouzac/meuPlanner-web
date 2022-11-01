@@ -1,0 +1,233 @@
+@font-face {
+    font-family: 'Outfit';
+    src: local('Outfit'), url(../src/fonts/Outfit-Regular.ttf) format('ttf');
+    /* other formats include: 'woff2', 'truetype, 'opentype',
+                              'embedded-opentype', and 'svg' */
+  }
+
+
+
+.containerCenter{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--gray);
+    background-image: url(../public/cloud-solid-svg.svg);
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.login{
+    width: 750px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    background-color: var(--white);
+    border-radius: 00.5rem;
+    margin-top: 80px;
+
+    form{
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    form button{
+        height: 45px;
+        font-size: 1.2rem;
+        width: 60%;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+
+    form input{
+        width: 100%;
+    }
+
+    h1{
+        color: #534730;
+        padding: 30px;
+        padding-bottom: 40px;
+        width: 100%;
+    }
+
+    label{
+        color: #1b1c1d;
+        padding: 15px;
+        width: 100%;
+        font:'Outfit';
+        
+    }
+}
+
+.password{
+    width: 60%;
+    position: relative;
+    margin-right: 254px;
+   
+    input{
+        margin-top: 12px;
+    }
+    
+    label{
+        margin-bottom: 5px;
+    }
+}
+
+.text{
+    margin-top: 1.5rem;
+    color: var(--light-black);
+    cursor: pointer;
+}
+
+@media (max-width: 700px){
+    .login{
+        width: 80%;
+
+    
+       form input{
+        height: 45px;
+       }
+
+       form button{
+        height: 40px;
+        width: 70%;
+       }
+    }
+
+    .password{
+        width: 50%;
+        position: relative;
+        margin-right: 234px;
+       
+        input{
+            margin-top: 12px;
+        }
+        
+        label{
+            margin-bottom: 5px;
+        }
+    }
+}
+
+@media (max-width: 420px){
+    .login{
+        width: 90%;
+
+       form input{
+        height: 30px;
+       }
+
+       form button{
+        height: 35px;
+        width: 50%;
+       }
+    }
+
+    .password{
+        width: 100%;
+        
+    }
+}
+
+@media (max-width: 320px){
+    .login{
+        width: 95%;
+
+       form input{
+        height: 30px;
+       }
+
+       form button{
+        height: 35px;
+        width: 50%;
+       }
+    }
+
+    .password{
+        width: 100%;
+    
+    }
+}
+
+
+@media (max-width: 600px){
+   
+    .password{
+        width: 100%;
+        margin-right: 10px;
+       
+        input{
+            margin-top: 12px;
+        }
+        
+        label{
+            margin-bottom: 5px;
+        }
+    }
+}
+
+@media (min-width: 2000px){
+    .login{
+        width: 800px;
+        margin-top: 120px;;
+       
+
+       form input{
+        height: 50px;
+       }
+
+       form button{
+        height: 45px;
+        width: 60%;
+       }
+    }
+
+    .password{
+        width: 70%;
+        margin-right:30%;
+       
+        input{
+            margin-top: 12px;
+        }
+        
+        label{
+            margin-bottom: 5px;
+        }
+    }
+
+    .containerCenter{
+        background-size: 60%;
+    }
+}
+
+@media (min-width: 2500px){
+    .login{
+        width: 800px;
+        margin-top: 80px;;
+      
+
+       form input{
+        height: 40px;
+       }
+
+       form button{
+        height: 55px;
+        width: 70%;
+       }
+    }
+
+    .containerCenter{
+        background-size: 45%;
+    }
+}
+
+
+
