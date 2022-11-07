@@ -2,7 +2,18 @@
     margin-bottom: 1rem;
     height: 50px;
     border: 0;
-    border-radius: 0.5rem;
+
+    background-color: var(--blue-gray);
+    color: var(--black);
+    padding: 1rem;
+    border: none;
+}
+
+.textarea{
+    margin-bottom: 1rem;
+    height: 50px;
+    border: 0;
+
     background-color: var(--blue-gray);
     color: var(--black);
     padding: 1rem;
@@ -10,5 +21,9 @@
 }
 
 .input::placeholder{
+    color: var(--light-black);
+}
+
+.textarea::placeholder{
     color: var(--light-black);
 }

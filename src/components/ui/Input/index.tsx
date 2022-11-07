@@ -17,3 +17,4 @@ export function TextArea({...rest}: TextareaProps){
         <textarea className='styles.input' {...rest}></textarea>
     )
 }
+

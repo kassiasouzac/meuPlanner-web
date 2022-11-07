@@ -1,12 +1,12 @@
 .containerCenter{
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     background-color: var(--gray);
     background-image: url(../public/cloud-solid-svg.svg);
-    background-size: 50%;
+    background-size: 55%;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -17,7 +17,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 2rem 1.5rem;
+    padding-bottom: 1rem;
+    padding-top: 15px;
     background-color: var(--white);
     border-radius: 00.5rem;
     margin-top: 47px;
@@ -33,18 +34,19 @@
     form button{
         height: 45px;
         font-size: 1.2rem;
-        width: 100%;
-        margin-top: 60px;
+        width: 40%;
+        margin-top: 30px;
         margin-bottom: 20px;
     }
 
     form input{
         width: 100%;
+        height: 35px;
     }
 
     h1{
         color: #534730;
-        padding: 30px;
+        padding: 10px;
         padding-bottom: 40px;
     }
 

@@ -4,8 +4,9 @@
     border: 0;
     padding: 0.4rem;
     color: var(--white);
-    border-radius: 0.5rem;
+    border-radius:1.5rem;
     transition: filter 0.2s;
+
 
     &[disabled]{
         cursor: not-allowed;
