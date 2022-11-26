@@ -2,8 +2,8 @@
     margin-bottom: 1rem;
     height: 50px;
     border: 0;
-
-    background-color: var(--blue-gray);
+    font-size: 1.3rem;
+    background-color: rgba(240, 243, 246, 0.54);
     color: var(--black);
     padding: 1rem;
     border: none;
@@ -14,7 +14,7 @@
     height: 50px;
     border: 0;
 
-    background-color: var(--blue-gray);
+    background-color: rgba(240, 243, 246, 0.54);
     color: var(--black);
     padding: 1rem;
     border: none;
@@ -22,6 +22,7 @@
 
 .input::placeholder{
     color: var(--light-black);
+    font-size: 1.3rem;
 }
 
 .textarea::placeholder{

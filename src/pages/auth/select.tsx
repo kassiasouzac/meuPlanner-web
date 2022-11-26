@@ -42,27 +42,27 @@ export default function Select() {
                     <div className={styles.column}>
                         <text>Tarefa</text>
                         <a onClick={handleCreateTask}>
-                            <FaClipboardList size={80}/>
+                            <FaClipboardList size={90}/>
                         </a>
                     </div>
-                    <Image src={imgBackground} alt="Imagem de planejamento" width={400} height={300} />
+                    <Image src={imgBackground} alt="Imagem de planejamento" width={450} height={400} />
                     <div className={styles.column}>
                         <text>Evento</text>
                         <a onClick={handleCreateEvent}>
-                            <FaCalendarDay size={80} />
+                            <FaCalendarDay size={90} />
                         </a>
                     </div>
                 </div>
                 <div className={styles.firstRow}>
                     <div className={styles.column}>
                         <a onClick={handleCreateGoal}>
-                            <GiStairsGoal size={80} />
+                            <GiStairsGoal size={100} />
                         </a>
                         <text>Meta</text>
                     </div>
                     <div className={styles.column}>
                         <a onClick={handleCreateHabit}>
-                            <GiWaterBottle size={80} />
+                            <GiWaterBottle size={100} />
                         </a>
                         <text>Hábito</text>
                     </div>

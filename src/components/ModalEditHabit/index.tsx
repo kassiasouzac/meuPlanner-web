@@ -5,7 +5,7 @@ import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-picker
 import { FiX } from 'react-icons/fi'
 import { Input, TextArea } from '../ui/Input';
 
-import { TaskItemProps, ItemProps } from '../../pages/auth/planning/tasks/listtasks';
+import { HabitItemProps, ItemProps } from '../../pages/auth/planning/habits/listhabits';
 import Router from 'next/router';
 import { IoFootsteps } from 'react-icons/io5'
 import { FormEvent, useState } from 'react';
@@ -13,53 +13,55 @@ import { setupAPIClient } from '../../services/api';
 import { toast } from 'react-toastify';
 import { Button } from '../ui/Button';
 import { TextField } from '@mui/material';
+import moment from 'moment';
 
-interface ModalOrderProps {
+interface ModalEditProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  task: TaskItemProps[];
+  habit: HabitItemProps[];
   categoryList: ItemProps[]
 }
 
 
-export function ModalEdit({ isOpen, onRequestClose, task, categoryList }: ModalOrderProps) {
-  const [title, setTitle] = useState(task[0].title || '');
-  const [id, setId] = useState(task[0].id)
-  const [description, setDescription] = useState(task[0].description || '');
-  const [category, setCategory] = useState(10);
+export function ModalEdit({ isOpen, onRequestClose, habit, categoryList }: ModalEditProps) {
+  const [title, setTitle] = useState(habit[0].title || '');
+  const [id, setId] = useState(habit[0].id)
+  const [motivation, setMotivation] = useState(habit[0].motivation || '');
+  const [category, setCategory] = useState(4);
   const [categories, setCategories] = useState(categoryList || []);
-  const [date, setDate] = useState(task[0].date)
   const [loading, setLoading] = useState(false);
-const current = new Date();
 
   async function handleEdit(event: FormEvent) {
     event.preventDefault();
-    let categoryId = categories[category].id;
+    
 
     try {
 
-      if (title === '' || description === '' || category === null) {
+      if (title === '' || motivation === '' || category === null  ) {
         alert('Preencha os campos!');
         return;
       }
+      
       setLoading(true);
+      let categoryId = categories[category].id;
+      
 
       const apiClient = setupAPIClient();
-      await apiClient.put('task/edit', {
-        taskId: id,
+      await apiClient.put('habit/edit', {
+        habitId: id,
         title: title,
-        description: description,
+        motivation: motivation,
         categoryId: categoryId
       })
 
 
-      toast.success('tarefa editada!');
+      toast.success('Hábito Editado!');
       setLoading(false);
       Router.reload();
 
     } catch (err) {
       console.log(err);
-      toast.error("Erro ao cadastrar!")
+      toast.error("Erro ao editar!")
       setLoading(false)
     }
   }
@@ -70,7 +72,7 @@ const current = new Date();
 
   }
 
-  function RenderList(item: TaskItemProps) {
+  function RenderList(item: HabitItemProps) {
 
     return (
 
@@ -83,11 +85,11 @@ const current = new Date();
             onChange={(e) => setTitle(e.target.value)}
             type="text"
           />
-          <label>Descrição</label>
+          <label>Motivação</label>
           <TextArea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder='Descreva seu evento...'></TextArea>
+            value={motivation}
+            onChange={(e) => setMotivation(e.target.value)}
+            placeholder='Descreva suas motivações...'></TextArea>
 
           <label>Categoria</label>
           <select value={category} onChange={handleChangeCategory}>
@@ -99,23 +101,6 @@ const current = new Date();
               )
             })}
           </select>
-          <div className={styles.row}>
-            <div className={styles.column}>
-              <label>Data</label>
-              <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DatePicker
-                  minDate={current}
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </div>
-
-          </div>
-
 
           <div className={styles.buttonLine}>
             <Button type='submit' loading={loading}>
@@ -159,10 +144,10 @@ const current = new Date();
 
       <div className={styles.container}>
 
-        <h2>Editar Tarefa</h2>
+        <h2>Editar Hábito</h2>
 
 
-        {task.map(item => (
+        {habit.map(item => (
           <section key={item.id} className={styles.containerItem}>
             <span></span>
             <span className={styles.description}>

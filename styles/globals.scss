@@ -26,7 +26,7 @@
     --light-black: rgba(0, 0, 0, 0.42);
 
     --gray: #E5E5E5;
-    --blue-gray: rgba(237, 242, 245, 0.7);
+    --blue-gray: rgba(240, 243, 246, 0.84);
     --light-orange: rgba(255, 152, 95, 0.74);
     --orange: #FF985F;
     --light-blue: rgba(98, 148, 178, 0.79);
@@ -44,7 +44,7 @@ a{
 }
 
 body{
-    background: var(--gray);
+    background: var(--blue-gray);
 }
 
 body, input, textarea, select, button, label{

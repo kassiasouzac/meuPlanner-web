@@ -10,6 +10,7 @@ import { canSSRAuth } from '../../../../utils/canSSRAuth';
 import { setupAPIClient } from '../../../../services/api';
 import { toast } from 'react-toastify';
 import { api } from '../../../../services/apiClient';
+import Router from 'next/router';
 
 
 type ItemProps = {
@@ -59,6 +60,7 @@ export default function CreateHabit({categoryList}: CategoryProps) {
 
         setLoading(false);
         toast.success('Hábito cadastrado!');
+        Router.push('/auth/planning/habits/listhabits');
 
         }catch(err){
             console.log(err);

@@ -4,32 +4,17 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: var(--gray);
-}
-
-.button{
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-
-    button{
-        height: 45px;
-        font-size: 1.2rem;
-        width: 40%;
-        margin-top: 60px;
-        margin-bottom: 20px;
-    }
+    background-color: var(--blue-gray);
 }
 
 .login{
-    width: 700px;
+    width: 1000px;
     display: flex;
     flex-direction: column;
     padding: 1rem;
     background-color: var(--white);
     border-radius: 00.5rem;
-    margin-top: -30px;
+    margin-top: -200px;
    
 
     form{
@@ -43,33 +28,39 @@
         margin-left: 30px;
     }
 
-   
-
     form input{
         width: 100%;
-        height: 30px;
+        height: 60px;
+
     }
 
     form textarea{
         width: 100%;
-        min-height: 60px;
+        min-height: 80px;
         margin-bottom: 1rem;
         border: 0;
-        background-color: var(--blue-gray);
+        background-color: rgba(240, 243, 246, 0.54);
         color: var(--black);
         padding: 1rem;
         border: none;
+        font-size: 1.3rem;
+    }
+
+    form textarea::placeholder{
+        color: var(--light-black);
+        font-size: 1.3rem;
     }
 
     form select{
         width:45%;
         margin-bottom: 1rem;
-        height: 50px;
+        height: 60px;
         border: 0;
-        background-color: var(--blue-gray);
-        color: var(--black);
+        background-color: rgba(240, 243, 246, 0.54);
+        color: var(--light-black);
         padding: 1rem;
         border: none;
+        font-size: 1.3rem;
     }
 
     form select::placeholder{
@@ -77,9 +68,10 @@
     }
 
     h1{
-        color: #534730;
+        color: #685b44;
         padding-bottom: 40px;
         text-align: center;
+        font-size: 2.6rem;
     }
 
     label{
@@ -88,6 +80,7 @@
         align-items: flex-start;
         justify-content: left;
         font-weight: bold;
+        font-size: 1.3rem;
     }
 }
 
@@ -98,9 +91,9 @@
     justify-content: center;
 
     button{
-        height: 45px;
-        font-size: 1.2rem;
-        width: 40%;
+        height: 60px;
+        font-size: 1.8rem;
+        width: 50%;
         margin-top: 30px;
         margin-bottom: 10px;
     }

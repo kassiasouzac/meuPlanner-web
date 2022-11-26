@@ -5,23 +5,24 @@ import { FiRefreshCcw } from 'react-icons/fi'
 import { Navbar } from '../../../../components/Navbar';
 
 import { setupAPIClient } from '../../../../services/api'
-import { ModalOrder } from '../../../../components/ModalTask'
+import { ModalHabit } from '../../../../components/ModalHabit'
 
-import { FaCalendar, FaList, FaTextWidth } from 'react-icons/fa';
+import { FaCalendar, FaClock, FaList, FaPlusCircle, FaTextWidth } from 'react-icons/fa';
+import moment from 'moment';
+import { ModalFrequency } from '../../../../components/ModalFrequency';
 
-type TaskProps = {
+type HabitProps = {
   id: string,
   title: string,
-  description: string,
-  date: string,
+  motivation: string,
   categoryId: string,
-  planningId: string;
+  frequency?:{
+    days?: []
+  }
 }
 
-
-
 interface HomeProps {
-  tasks: TaskProps[];
+  habits: HabitProps[];
   categories: CategoryProps[]
 }
 
@@ -30,28 +31,25 @@ type CategoryProps = {
   title: string
 }
 
-
-export type TaskItemProps = {
+export type HabitItemProps = {
   id: string;
   title: string;
-  description: string;
-  date: string;
+  motivation: string;
   categoryId: string;
-  planningId: string;
+  frequency?:{
+    days?: []
+  };
 }
-
 
 export type ItemProps = {
   id: string;
   title: string;
 }
 
-
-
-export default function ListTasks({ tasks, categories }: HomeProps) {
-  const [todos, setTodos] = useState(tasks || [])
-
-  const [modalItem, setModalItem] = useState<TaskItemProps[]>()
+export default function ListHabits({ habits, categories }: HomeProps) {
+  const [habitsList, setHabits] = useState(habits || [])
+  const [modal, setModal] = useState(false);
+  const [modalItem, setModalItem] = useState<HabitItemProps[]>()
   const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -59,29 +57,48 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
     setModalVisible(false);
   }
 
-  async function handleOpenModalView(id: string) {
+  function handleCloseModalFrequency() {
+    setModal(false);
+  }
 
+  async function handleOpenModalView(id: string) {
+ 
     const apiClient = setupAPIClient();
 
-    const response = await apiClient.get('/task/detail', {
+    const response = await apiClient.get('/habit/detail', {
       params: {
-        taskId: id,
+        habitId: id,
       }
     })
 
     setModalItem(response.data);
-    console.log(modalItem);
+    console.log(modalItem)
     setModalVisible(true);
 
   }
 
+  async function handleOpenModalFrequency(id: string) {
+ 
+    const apiClient = setupAPIClient();
 
+    const response = await apiClient.get('/habit/detail', {
+      params: {
+        habitId: id,
+      }
+    })
 
-  function RenderList(item: TaskItemProps) {
+    setModalItem(response.data);
+    console.log(modalItem)
+    setModal(true);
 
-    const data = (item.date).split('T');
+  }
+
+  function RenderList(item: HabitItemProps) {
+
+   
 
     return (
+      
 <div className={styles.orderItem}>
       <div className={styles.itemArea}>
 
@@ -92,29 +109,12 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
         <div className={styles.itemBorder}>
           <div className={styles.itemLineArea}>
 
-            <a><FaList size={20} fill="#FF985F" /></a>
+            <FaList size={20} fill="#FF985F" />
             <div className={styles.item}>
               {item.title}
             </div>
           </div>
-
-          <div className={styles.itemLineArea}>
-            <FaTextWidth size={20} fill="#FF985F" />
-            <div className={styles.item}>
-              {item.description}
-            </div>
-          </div>
-
-          <div className={styles.itemLineArea}>
-
-            <FaCalendar size={20} fill="#FF985F" />
-
-            <div className={styles.item}>
-              {data[0]}
-            </div>
-
-
-          </div>
+         
 
         </div>
       </div>
@@ -128,12 +128,12 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
     const get = await apiClient.get('/planning');
     const planningId = get.data.planning.id;
 
-    const response = await apiClient.get('/tasks', {
+    const response = await apiClient.get('/habits', {
       params: {
         planningId: planningId
       }
     });
-    setTodos(response.data.task);
+    setHabits(response.data.habit);
 
   }
 
@@ -145,7 +145,7 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
       </div>
       <main className={styles.container}>
         <div className={styles.containerHeader}>
-          <h1>Tarefas</h1>
+          <h1>Hábitos</h1>
           <button onClick={handleRefresh}>
             <FiRefreshCcw size={50} color="#3fffa3" />
           </button>
@@ -153,15 +153,15 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
 
         <article className={styles.listOreders}>
 
-          {todos.length === 0 && (
+          {habitsList.length === 0 && (
             <span className={styles.emptyList}>
-              Nenhuma tarefa encontrada...
+              Nenhum evento encontrado...
             </span>
           )}
 
-          {todos.map(item => (
+          {habitsList.map(item => (
             <section key={item.id} >
-
+         
               <button onClick={() => handleOpenModalView(item.id)}>
                 {RenderList(item)}
               </button>
@@ -174,11 +174,19 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
 
       </main>
       {modalVisible && (
-        <ModalOrder
+        <ModalHabit
           isOpen={modalVisible}
           onRequestClose={handleCloseModal}
-          task={modalItem}
+          habit={modalItem}
         categories={categories}
+        />
+      )}
+      {modal && (
+        <ModalFrequency
+          isOpen={modal}
+          onRequestClose={handleCloseModalFrequency}
+          habit={modalItem}
+        
         />
       )}
 
@@ -195,7 +203,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
   const planningId = get.data.planning.id;
 
 
-  const response = await apiClient.get('/tasks', {
+  const response = await apiClient.get('/habits', {
     params: {
       planningId: planningId
     }
@@ -205,7 +213,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
   return {
     props: {
-      tasks: response.data.task,
+      habits: response.data.habit,
       categories: categories.data.category
     }
   }

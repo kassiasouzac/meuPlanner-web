@@ -2,35 +2,37 @@ import Modal from 'react-modal';
 import styles from './style.module.scss';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { TextField } from '@mui/material';
+import moment from 'moment';
 import { FiX } from 'react-icons/fi'
 import { Input, TextArea } from '../ui/Input';
 
-import { TaskItemProps, ItemProps } from '../../pages/auth/planning/tasks/listtasks';
+import { GoalItemProps, ItemProps } from '../../pages/auth/planning/goals/listgoals';
 import Router from 'next/router';
 import { IoFootsteps } from 'react-icons/io5'
 import { FormEvent, useState } from 'react';
 import { setupAPIClient } from '../../services/api';
 import { toast } from 'react-toastify';
 import { Button } from '../ui/Button';
-import { TextField } from '@mui/material';
 
 interface ModalOrderProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  task: TaskItemProps[];
+  goal: GoalItemProps[];
   categoryList: ItemProps[]
 }
 
 
-export function ModalEdit({ isOpen, onRequestClose, task, categoryList }: ModalOrderProps) {
-  const [title, setTitle] = useState(task[0].title || '');
-  const [id, setId] = useState(task[0].id)
-  const [description, setDescription] = useState(task[0].description || '');
+export function ModalEdit({ isOpen, onRequestClose, goal, categoryList }: ModalOrderProps) {
+  const [title, setTitle] = useState(goal[0].title || '');
+  const [id, setId] = useState(goal[0].id)
+  const [description, setDescription] = useState(goal[0].description || '');
   const [category, setCategory] = useState(10);
   const [categories, setCategories] = useState(categoryList || []);
-  const [date, setDate] = useState(task[0].date)
+  const [dateFrom, setDateFrom] = useState(goal[0].startDate);
+  const [dateTo, setDateTo] = useState(goal[0].endDate)
   const [loading, setLoading] = useState(false);
-const current = new Date();
+  const current = new Date();
 
   async function handleEdit(event: FormEvent) {
     event.preventDefault();
@@ -38,22 +40,24 @@ const current = new Date();
 
     try {
 
-      if (title === '' || description === '' || category === null) {
-        alert('Preencha os campos!');
+      if (title === '' || description === '' || category === null || dateFrom === null || dateTo === null) {
+        toast.error('Preencha os campos!')
         return;
       }
       setLoading(true);
 
       const apiClient = setupAPIClient();
-      await apiClient.put('task/edit', {
-        taskId: id,
+      await apiClient.put('goal/edit', {
+        goalId: id,
         title: title,
         description: description,
+        startDate: dateFrom,
+        endDate: dateTo,
         categoryId: categoryId
       })
 
 
-      toast.success('tarefa editada!');
+      toast.success('Meta atualizada!');
       setLoading(false);
       Router.reload();
 
@@ -70,7 +74,7 @@ const current = new Date();
 
   }
 
-  function RenderList(item: TaskItemProps) {
+  function RenderList(item: GoalItemProps) {
 
     return (
 
@@ -101,19 +105,31 @@ const current = new Date();
           </select>
           <div className={styles.row}>
             <div className={styles.column}>
-              <label>Data</label>
+              <label>De</label>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   minDate={current}
-                  value={date}
+                  value={dateFrom}
                   onChange={(newValue) => {
-                    setDate(newValue);
+                    setDateFrom(newValue);
                   }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </div>
-
+            <div className={styles.column2}>
+              <label>Até</label>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DatePicker
+                  minDate={dateFrom}
+                  value={dateTo}
+                  onChange={(newValue) => {
+                    setDateTo(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </div>
           </div>
 
 
@@ -162,7 +178,7 @@ const current = new Date();
         <h2>Editar Tarefa</h2>
 
 
-        {task.map(item => (
+        {goal.map(item => (
           <section key={item.id} className={styles.containerItem}>
             <span></span>
             <span className={styles.description}>

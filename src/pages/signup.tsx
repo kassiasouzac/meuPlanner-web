@@ -7,6 +7,7 @@ import { Header} from '../components/Header';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button'
 import { canSSRGuest } from '../utils/canSSRGuest';
+import { toast } from 'react-toastify';
 
 export default function SignUp(){
     const {signUp} = useContext(AuthContext);
@@ -22,11 +23,15 @@ export default function SignUp(){
         event.preventDefault();
 
         if(name === ''|| lastname === ''|| email === ''|| password === ''||confirm === ''){
-            alert('Preencha os campos!');
-        }
-
-        if(password !== confirm){
-            alert('As senhas não conferem');
+            //alert();
+            toast.error('Preencha os campos!')
+            return
+        }else if(password !== confirm){
+            toast.error('As senhas não conferem!')
+            return
+        }else if(email === 'kassiasouzac@gmail.com'){
+            toast.error('E-mail já cadastrado!')
+            return
         }
 
         setLoading(true);
@@ -61,20 +66,24 @@ export default function SignUp(){
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder='Digite seu nome'
             />
             <label>Sobrenome</label>
             <Input 
             type="text"
             value={lastname}
             onChange={(e) => setLastname(e.target.value)}
+            placeholder='Digite seu sobrenome'
             />
              <label>E-mail</label>
             <Input 
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder='Digite seu e-mail'
             />
-            <div className={styles.password}>
+           <div className={styles.row}>
+           <div className={styles.password}>
              <label>Senha</label>
             <Input 
             type="password"
@@ -88,6 +97,7 @@ export default function SignUp(){
             onChange={(e) => setConfirm(e.target.value)}
             />
             </div>
+           </div>
             <Button
                 type="submit"
                 loading={loading}

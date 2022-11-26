@@ -5,23 +5,22 @@ import { FiRefreshCcw } from 'react-icons/fi'
 import { Navbar } from '../../../../components/Navbar';
 
 import { setupAPIClient } from '../../../../services/api'
-import { ModalOrder } from '../../../../components/ModalTask'
+import { ModalEvent } from '../../../../components/ModalEvent'
 
-import { FaCalendar, FaList, FaTextWidth } from 'react-icons/fa';
+import { FaCalendar, FaClock, FaList, FaTextWidth } from 'react-icons/fa';
+import moment from 'moment';
 
-type TaskProps = {
+type EventProps = {
   id: string,
   title: string,
   description: string,
-  date: string,
-  categoryId: string,
-  planningId: string;
+  date: Date,
+  time: Date,
+  categoryId: string
 }
 
-
-
 interface HomeProps {
-  tasks: TaskProps[];
+  events: EventProps[];
   categories: CategoryProps[]
 }
 
@@ -30,28 +29,24 @@ type CategoryProps = {
   title: string
 }
 
-
-export type TaskItemProps = {
+export type EventItemProps = {
   id: string;
   title: string;
   description: string;
-  date: string;
+  date: Date;
+  time: Date;
   categoryId: string;
-  planningId: string;
 }
-
 
 export type ItemProps = {
   id: string;
   title: string;
 }
 
+export default function ListEvents({ events, categories }: HomeProps) {
+  const [eventsList, setEvents] = useState(events || [])
 
-
-export default function ListTasks({ tasks, categories }: HomeProps) {
-  const [todos, setTodos] = useState(tasks || [])
-
-  const [modalItem, setModalItem] = useState<TaskItemProps[]>()
+  const [modalItem, setModalItem] = useState<EventItemProps[]>()
   const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -60,26 +55,28 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
   }
 
   async function handleOpenModalView(id: string) {
-
+ 
     const apiClient = setupAPIClient();
 
-    const response = await apiClient.get('/task/detail', {
+    const response = await apiClient.get('/event/detail', {
       params: {
-        taskId: id,
+        eventId: id,
       }
     })
 
     setModalItem(response.data);
-    console.log(modalItem);
+    console.log(modalItem)
     setModalVisible(true);
 
   }
 
 
 
-  function RenderList(item: TaskItemProps) {
+  function RenderList(item: EventItemProps) {
 
-    const data = (item.date).split('T');
+    const data = moment(item.date).format('DD-MM-YYYY')
+    const time = moment(item.time).format('hh:mm a');
+    
 
     return (
 <div className={styles.orderItem}>
@@ -98,21 +95,21 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
             </div>
           </div>
 
-          <div className={styles.itemLineArea}>
-            <FaTextWidth size={20} fill="#FF985F" />
-            <div className={styles.item}>
-              {item.description}
-            </div>
-          </div>
+          
 
           <div className={styles.itemLineArea}>
 
-            <FaCalendar size={20} fill="#FF985F" />
+            <FaCalendar size={40} fill="#FF985F" />
 
             <div className={styles.item}>
-              {data[0]}
+              {data}
             </div>
 
+            <FaClock size={50} fill="#FF985F" />
+
+              <div className={styles.item}>
+                {time}
+              </div>
 
           </div>
 
@@ -128,12 +125,12 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
     const get = await apiClient.get('/planning');
     const planningId = get.data.planning.id;
 
-    const response = await apiClient.get('/tasks', {
+    const response = await apiClient.get('/events', {
       params: {
         planningId: planningId
       }
     });
-    setTodos(response.data.task);
+    setEvents(response.data.event);
 
   }
 
@@ -145,7 +142,7 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
       </div>
       <main className={styles.container}>
         <div className={styles.containerHeader}>
-          <h1>Tarefas</h1>
+          <h1>Eventos</h1>
           <button onClick={handleRefresh}>
             <FiRefreshCcw size={50} color="#3fffa3" />
           </button>
@@ -153,13 +150,13 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
 
         <article className={styles.listOreders}>
 
-          {todos.length === 0 && (
+          {eventsList.length === 0 && (
             <span className={styles.emptyList}>
-              Nenhuma tarefa encontrada...
+              Nenhum evento encontrado...
             </span>
           )}
 
-          {todos.map(item => (
+          {eventsList.map(item => (
             <section key={item.id} >
 
               <button onClick={() => handleOpenModalView(item.id)}>
@@ -174,10 +171,10 @@ export default function ListTasks({ tasks, categories }: HomeProps) {
 
       </main>
       {modalVisible && (
-        <ModalOrder
+        <ModalEvent
           isOpen={modalVisible}
           onRequestClose={handleCloseModal}
-          task={modalItem}
+          event={modalItem}
         categories={categories}
         />
       )}
@@ -195,7 +192,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
   const planningId = get.data.planning.id;
 
 
-  const response = await apiClient.get('/tasks', {
+  const response = await apiClient.get('/events', {
     params: {
       planningId: planningId
     }
@@ -205,7 +202,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
   return {
     props: {
-      tasks: response.data.task,
+      events: response.data.event,
       categories: categories.data.category
     }
   }

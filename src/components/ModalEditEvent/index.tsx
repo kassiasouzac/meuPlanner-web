@@ -5,7 +5,7 @@ import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-picker
 import { FiX } from 'react-icons/fi'
 import { Input, TextArea } from '../ui/Input';
 
-import { TaskItemProps, ItemProps } from '../../pages/auth/planning/tasks/listtasks';
+import { EventItemProps, ItemProps } from '../../pages/auth/planning/events/listevents';
 import Router from 'next/router';
 import { IoFootsteps } from 'react-icons/io5'
 import { FormEvent, useState } from 'react';
@@ -13,53 +13,62 @@ import { setupAPIClient } from '../../services/api';
 import { toast } from 'react-toastify';
 import { Button } from '../ui/Button';
 import { TextField } from '@mui/material';
+import moment from 'moment';
 
-interface ModalOrderProps {
+interface ModalEditProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  task: TaskItemProps[];
+  event: EventItemProps[];
   categoryList: ItemProps[]
 }
 
 
-export function ModalEdit({ isOpen, onRequestClose, task, categoryList }: ModalOrderProps) {
-  const [title, setTitle] = useState(task[0].title || '');
-  const [id, setId] = useState(task[0].id)
-  const [description, setDescription] = useState(task[0].description || '');
+export function ModalEdit({ isOpen, onRequestClose, event, categoryList }: ModalEditProps) {
+  const [title, setTitle] = useState(event[0].title || '');
+  const [id, setId] = useState(event[0].id)
+  const [description, setDescription] = useState(event[0].description || '');
   const [category, setCategory] = useState(10);
   const [categories, setCategories] = useState(categoryList || []);
-  const [date, setDate] = useState(task[0].date)
+  const [savedDate, setDate] = useState(event[0].date)
   const [loading, setLoading] = useState(false);
-const current = new Date();
+  const [savedTime, setTime] = useState(event[0].time)
+  const current = new Date();
+
 
   async function handleEdit(event: FormEvent) {
     event.preventDefault();
-    let categoryId = categories[category].id;
+
 
     try {
 
-      if (title === '' || description === '' || category === null) {
+      if (title === '' || description === '' || category === null || savedDate === null || savedTime === null) {
         alert('Preencha os campos!');
         return;
       }
+      let date = moment(savedDate).format()
+      let time = moment(savedTime).format()
       setLoading(true);
+      let categoryId = categories[category].id;
+
 
       const apiClient = setupAPIClient();
-      await apiClient.put('task/edit', {
-        taskId: id,
+      await apiClient.put('event/edit', {
+        eventId: id,
         title: title,
         description: description,
+        date,
+        time,
         categoryId: categoryId
       })
 
 
-      toast.success('tarefa editada!');
+      toast.success('Evento Editado!');
       setLoading(false);
       Router.reload();
 
     } catch (err) {
       console.log(err);
-      toast.error("Erro ao cadastrar!")
+      toast.error("Erro ao editar!")
       setLoading(false)
     }
   }
@@ -70,7 +79,7 @@ const current = new Date();
 
   }
 
-  function RenderList(item: TaskItemProps) {
+  function RenderList(item: EventItemProps) {
 
     return (
 
@@ -105,7 +114,7 @@ const current = new Date();
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
                   minDate={current}
-                  value={date}
+                  value={savedDate}
                   onChange={(newValue) => {
                     setDate(newValue);
                   }}
@@ -113,7 +122,19 @@ const current = new Date();
                 />
               </LocalizationProvider>
             </div>
+            <div className={styles.column}>
+              <label>Horário</label>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <TimePicker
 
+                  value={savedTime}
+                  onChange={(newValue) => {
+                    setTime(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </div>
           </div>
 
 
@@ -159,10 +180,10 @@ const current = new Date();
 
       <div className={styles.container}>
 
-        <h2>Editar Tarefa</h2>
+        <h2>Editar Evento</h2>
 
 
-        {task.map(item => (
+        {event.map(item => (
           <section key={item.id} className={styles.containerItem}>
             <span></span>
             <span className={styles.description}>

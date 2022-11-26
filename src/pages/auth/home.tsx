@@ -34,22 +34,22 @@ function handleCreate(){
         <div className={styles.central}>
           <a>
             <Link href={'/auth/planning/tasks/listtasks'}>
-              <FaClipboardList size={90} />
+              <FaClipboardList size={100} />
             </Link>
           </a>
-          <Image src={imgBackground} alt="Imagem de planejamento" width={580} height={400} />
-          <a><FaCalendarDay size={90}  /></a>
+          <Image src={imgBackground} alt="Imagem de planejamento" width={680} height={500} />
+          <a><FaCalendarDay size={100}  /></a>
         </div>
         <div className={styles.firstRow}>
-        <a><GiStairsGoal size={90}  /></a>
+        <a><GiStairsGoal size={100}  /></a>
         <a onClick={handleCreate}>
             <div className={styles.circle}>
-              <FaPlus color='white' size={25}/>
+              <FaPlus color='white' size={35}/>
             </div>
           </a>
           <a>
             <Link href={'/auth/planning/habits/habitslist'} >
-              <GiWaterBottle size={90}  />
+              <GiWaterBottle size={100}  />
             </Link>
           </a>
         </div>

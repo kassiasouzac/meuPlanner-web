@@ -2,6 +2,10 @@ import { useState, FormEvent } from 'react';
 import Head from 'next/head';
 import styles from '../../../../../styles/create.module.scss';
 import { toast } from 'react-toastify';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { TextField } from '@mui/material';
+import moment from 'moment';
 
 import {Navbar} from '../../../../components/Navbar';
 import { Input, TextArea } from '../../../../components/ui/Input';
@@ -26,10 +30,11 @@ export default function CreateTask({categoryList}: CategoryProps) {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [category, setCategory] = useState(0);
+    const [category, setCategory] = useState(-1);
     const [categories, setCategories] = useState(categoryList || []);
     const [startDate, setStartDate] = useState('');
     const [loading, setLoading] = useState(false);
+    const current = new Date();
 
     async function handleCreate(event: FormEvent){
         event.preventDefault();
@@ -41,7 +46,7 @@ export default function CreateTask({categoryList}: CategoryProps) {
                 return;
             }
             const planningId = await (await api.get('/planning')).data.planning.id ;
-            const date = new Date();
+            const date = startDate;
             setLoading(true);
 
 
@@ -97,6 +102,9 @@ export default function CreateTask({categoryList}: CategoryProps) {
 
                         <label>Categoria</label>
                         <select value={category} onChange={handleChangeCategory}>
+                        <option>
+                            Selecione uma categoria
+                        </option>
                         {categories.map( (item, index) => {
                              return(
                                 <option key={item.id} value={index}>
@@ -108,10 +116,16 @@ export default function CreateTask({categoryList}: CategoryProps) {
                         <div className={styles.row}>
                             <div className={styles.column}>
                                 <label>Data</label>
-                                <Input          
-                                    type="date"
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                />
+                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                    <DatePicker
+                                        minDate={current}
+                                        value={startDate}
+                                        onChange={(newValue) => {
+                                            setStartDate(newValue);
+                                        }}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                </LocalizationProvider>
                             </div>
  
                         </div>
